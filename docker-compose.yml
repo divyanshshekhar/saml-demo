@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  saml-idp:
+    container_name: saml-idp
+    build: ./saml-idp
+    ports:
+      - 8080:80
+    networks:
+      - idp-subnet
+
+  idp-db:
+    container_name: idp-db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_DATABASE: "idp-db"
+      MYSQL_USER: "idp-user"
+      MYSQL_PASSWORD: "password"
+    ports:
+      - 9906:3306
+    networks:
+      - idp-subnet
+
+networks:
+  idp-subnet:
