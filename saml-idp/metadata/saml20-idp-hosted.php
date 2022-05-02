@@ -24,14 +24,12 @@ $metadata['__DYNAMIC:1__'] = [
      */
     'auth' => 'sql',
 
-    /* Uncomment the following to use the uri NameFormat on attributes. */
-    /*
+    /* Use the uri NameFormat on attributes. Recommeded for new installations. */
     'attributes.NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
     'authproc' => [
         // Convert LDAP names to oids.
         100 => ['class' => 'core:AttributeMap', 'name2oid'],
     ],
-    */
 
     /*
      * Uncomment the following to specify the registration information in the
