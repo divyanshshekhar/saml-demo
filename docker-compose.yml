@@ -25,6 +25,17 @@ services:
       - idp-subnet
       - global-net
 
+  saml-idp-interface:
+    container_name: saml-idp-interface
+    build: ./saml-idp-interface
+    ports:
+      - "7070:80"
+    depends_on:
+      - idp-db
+    networks:
+      - idp-subnet
+      - global-net
+
   sp-db:
     container_name: sp-db
     image: mysql:latest
