@@ -496,7 +496,7 @@ $config = [
      */
 
      'module.enable' => [
-         'exampleauth' => false,
+         'sqlauth' => true,
          'core' => true,
          'saml' => true
      ],
