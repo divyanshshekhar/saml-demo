@@ -52,9 +52,9 @@ services:
 
   saml-sp:
     container_name: saml-sp
-    build: ./saml-sp
+    build: ./saml-sp-node
     ports:
-      - "9090:80"
+      - "9090:3000"
     depends_on:
       - sp-db
     networks:
