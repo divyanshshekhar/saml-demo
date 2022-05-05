@@ -1,16 +1,25 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const passport = require('passport')
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session')
+
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+
+require('./config/db-config')
+
+const app = express();
+
+app.use(session({secret: 'somerandomsecret', maxAge: 900000}))
 
 //Configure passport
 require('./config/passport-config')
-
-var app = express();
+app.use(passport.initialize())
+app.use(passport.session())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

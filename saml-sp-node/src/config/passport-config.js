@@ -1,14 +1,24 @@
-var LocalStrategy = require('passport-local');
-var passport = require('passport')
+const passport = require('passport')
+const LocalStrategy = require('passport-local');
+const getDbConnection = require('./db-config')
 
-var localStrategy = new LocalStrategy(function verify(username, password, cb) {
-    db.get('SELECT * FROM users WHERE username = ?', [ username ], function(err, user) {
+
+const localStrategy = new LocalStrategy(async function verify(username, password, cb) {
+
+    (await getDbConnection()).query('SELECT * FROM users WHERE username = ?', [ username ], function(err, row) {
         if (err) { return cb(err); }
-        if (!user) { return cb(null, false, { message: 'Incorrect username or password.' }); }
+        if(row.length === 0) {
+            return cb(null, false, { message: 'Incorrect username or password.' });
+        }
+        const user = row[0]['username']
+        const password_from_db = row[0]['password']
+        if (!user) {
+            return cb(null, false, { message: 'Incorrect username or password.' });
+        }
 
         crypto.pbkdf2(password, user.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
             if (err) { return cb(err); }
-            if (!crypto.timingSafeEqual(user.hashed_password, hashedPassword)) {
+            if (!crypto.timingSafeEqual(password_from_db, hashedPassword)) {
                 return cb(null, false, { message: 'Incorrect username or password.' });
             }
             return cb(null, user);

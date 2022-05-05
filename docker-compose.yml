@@ -9,6 +9,7 @@ services:
       MYSQL_DATABASE: "idp-db"
       MYSQL_USER: "idp-user"
       MYSQL_PASSWORD: "password"
+    command: "--default-authentication-plugin=mysql_native_password"
     ports:
       - "8085:3306"
     networks:
@@ -45,6 +46,7 @@ services:
       MYSQL_DATABASE: "sp-db"
       MYSQL_USER: "sp-user"
       MYSQL_PASSWORD: "password"
+    command: --default-authentication-plugin=mysql_native_password
     ports:
       - "9095:3306"
     networks:
@@ -55,6 +57,12 @@ services:
     build: ./saml-sp-node
     ports:
       - "9090:3000"
+    environment:
+      DB_HOST: sp-db
+      DB_PORT: 3306
+      DB_USER: sp-user
+      DB_PASSWORD: password
+      DB_NAME: sp-db
     depends_on:
       - sp-db
     networks:
